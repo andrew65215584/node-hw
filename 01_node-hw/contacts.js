@@ -45,6 +45,7 @@ function addContact(name, email, phone) {
     })
   })
 }
+
 module.exports = {
   getContactById,
   removeContact, addContact, listContacts

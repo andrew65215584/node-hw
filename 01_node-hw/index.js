@@ -6,6 +6,7 @@ const argv = require('yargs').argv;
 function invokeAction({ action, id, name, email, phone }) {
     console.log(action);
 
+    
     switch (action) {
         case 'list':
             contacts.listContacts()
@@ -19,6 +20,7 @@ function invokeAction({ action, id, name, email, phone }) {
         case 'remove':
             contacts.removeContact(id)
             break;
+        
         default:
             console.warn('\x1B[31m Unknown action type!');
     }
