@@ -1,19 +1,22 @@
 {
-  "name": "01_node-hw",
+  "name": "02_node-hw",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon ./src/app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "joi": "^17.3.0",
+    "lowdb": "^1.0.0",
     "morgan": "^1.10.0",
     "nanoid": "^3.1.16",
+    "uuid": "^8.3.1",
     "yargs": "^16.1.0"
   },
   "devDependencies": {
