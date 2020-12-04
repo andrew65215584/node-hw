@@ -1,9 +1,11 @@
 const { HttpCode } = require('../helpers/constants');
 
-const { ContactsService } = require('../services/index');
+const ContactsService = require('../services/contacts');
 const contactsService = new ContactsService();
 
+
 const createContact = async (req, res, next) => {
+console.log('yeeeeeeeeeeeeeeeeeeeees')
   try {
     const contact = await contactsService.createContact(req.body);
 
@@ -17,6 +19,7 @@ const createContact = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+
 };
 
 const getAllContacts = async (req, res, next) => {

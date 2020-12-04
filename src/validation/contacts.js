@@ -2,9 +2,9 @@ const Joi = require('joi');
 const { HttpCode } = require('../helpers/constants');
 
 const schemaCreateContact = Joi.object({
-  name: Joi.string().min(2).max(30).required(),
-  email: Joi.string().email().required(),
-  phone: Joi.string().required(),
+  name: Joi.string(),
+  email: Joi.string(),
+  phone: Joi.string(),
 });
 
 const schemaUpdateContact = Joi.object({
@@ -13,6 +13,9 @@ const schemaUpdateContact = Joi.object({
   email: Joi.string().optional(),
   phone: Joi.string().optional(),
 });
+
+
+
 
 
 const validate = (schema, body, next) => {
@@ -27,6 +30,10 @@ const validate = (schema, body, next) => {
   }
   next();
 };
+
+
+
+
 
 module.exports.validateCreateContact = (req, res, next) => {
   return validate(schemaCreateContact, req.body, next);

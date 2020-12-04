@@ -1,32 +1,42 @@
-const {v4} = require('uuid')
-
-
+const Contact = require('../schemas/contacts');
 
 class ContactsRepository {
-    constructor() { }
-    
-    getAll() {
-        
-        return {}
-    }
+  constructor() {
+    this.model = Contact;
+  }
 
-    getContactById({ id }) {
-        return {}
-    }
+  async getAll() {
+    const results = await this.model.find({});
+    return results;
+  }
 
-    createContact(body) {
-        return {}
-    }
+  async getContactById({ id }) {
+    const result = await this.model.findOne({ _id: id });
+    return result;
+  }
 
-    updateContact({ id }, body) {
-        return {}
-    }
+  async createContact(body) {
+    //   console.log(this.model)
+      console.log('body', body);
+    const result = await this.model.create(body);
+    return result;
+  }
 
-    removeContact({ id }) {
-        return {}
-    }
+  async updateContact({ id }, body) {
+    const result = await this.model.findByIdAndUpdate(
+      { _id: id },
+      { ...body },
+      { new: true },
+    );
+    return result;
+  }
+
+  async removeContact({ id }) {
+    const result = await this.model.findByIdAndRemove({
+      _id: id,
+    });
+    return result;
+  }
 }
-
-
 
 module.exports = ContactsRepository;
