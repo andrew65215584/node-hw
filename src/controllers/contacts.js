@@ -5,7 +5,6 @@ const contactsService = new ContactsService();
 
 
 const createContact = async (req, res, next) => {
-console.log('yeeeeeeeeeeeeeeeeeeeees')
   try {
     const contact = await contactsService.createContact(req.body);
 
@@ -65,6 +64,9 @@ const getContactById = async (req, res, next) => {
 const updateContact = async (req, res, next) => {
   try {
     const contact = await contactsService.getContactById(req.params);
+
+    console.log('req.params', contact);
+    
     if (contact.length === 0) {
       return res.status(400).send('{ "message": "Not found" }');
     }

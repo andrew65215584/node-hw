@@ -10,19 +10,17 @@ class ContactsRepository {
     return results;
   }
 
-  async getContactById({ id }) {
+  async getContactById( id ) {
     const result = await this.model.findOne({ _id: id });
     return result;
   }
 
   async createContact(body) {
-    //   console.log(this.model)
-      console.log('body', body);
     const result = await this.model.create(body);
     return result;
   }
 
-  async updateContact({ id }, body) {
+  async updateContact(id, body) {
     const result = await this.model.findByIdAndUpdate(
       { _id: id },
       { ...body },
@@ -31,7 +29,7 @@ class ContactsRepository {
     return result;
   }
 
-  async removeContact({ id }) {
+  async removeContact(id) {
     const result = await this.model.findByIdAndRemove({
       _id: id,
     });
