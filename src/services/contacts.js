@@ -1,38 +1,28 @@
-const {ContactsRepository} = require('../repository');
+const { ContactsRepository } = require('../repository');
 
 class ContactsService {
   constructor() {
-    this.repositories = new ContactsRepository()
-    ;
+    this.repositories = new ContactsRepository();
   }
 
-  async getAll() {
-    const data = await this.repositories.getAll();
+  async getAll( userId ,query) {
+    const data = await this.repositories.getAll(userId , query);
     return data;
   }
 
-  async getContactById({ id }) {
-    
-    const data = await this.repositories.getContactById(id);
+  async getContactById(userId, { id }) {
+    const data = await this.repositories.getContactById(userId , id);
     return data;
   }
 
-
-
-
-  async createContact(body) {
-  
-    const data = await this.repositories.createContact(body);
+  async createContact(body, userId) {
+    const data = await this.repositories.create(body, userId);
     return data;
   }
 
+  async updateContact(userId ,{ id }, body) {
+    const data = await this.repositories.updateContact(userId,id, body);
 
-
-
-  async updateContact({id}, body) {
-    console.log('id in services', id)
-    console.log('body in services', body)
-    const data = await this.repositories.updateContact(id, body);
     return data;
   }
 
