@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const path = require('path');
 
 const rateLimit = require('express-rate-limit');
 const app = express();
@@ -8,6 +9,12 @@ const app = express();
 const { HttpCode } = require('./helpers/constants');
 const routerContacts = require('./routers/contacts/index');
 const routerUsers = require('./routers/users/index');
+
+const multer = require('multer');
+const jimp = require('jimp');
+
+const UPLOAD_DIR = path.join(__dirname, process.env.UPLOAD_DIR);
+const IMG_DIR = path.join(__dirname, 'public', 'images');
 
 
 const apiLimiter = rateLimit({
@@ -18,10 +25,13 @@ const apiLimiter = rateLimit({
 app.use(helmet());
 app.use(cors());
 app.use(express.json({ limit: 10000 }));
+app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/api/', apiLimiter);
 app.use('/api/contacts', routerContacts);
 app.use('/api/users', routerUsers);
+
+
 
 app.use((req, res, next) => {
   res.status(HttpCode.NOT_FOUND).json({
