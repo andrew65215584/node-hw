@@ -10,7 +10,7 @@ class UsersRepository {
   }
 
   async updateToken(id, token) {
-      await this.model.updateOne({_id : id}, {token})
+    await this.model.updateOne({ _id: id }, { token });
   }
 
   async getUserById(id) {
@@ -25,6 +25,11 @@ class UsersRepository {
   async getAllUsers() {
     const results = await this.model.find({});
     return results;
+  }
+
+  async findByToken(token) {
+    const data = await this.model.findOne({token});
+    return data
   }
 }
 

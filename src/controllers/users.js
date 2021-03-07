@@ -1,8 +1,12 @@
-const { AuthService, UserService } = require('../services');
+const { AuthService, UserService, EmailService } = require('../services');
+const UsersRepository = require('../repository/users');
 const { HttpCode } = require('../helpers/constants');
 const serviceUser = new UserService();
 const serviceAuth = new AuthService();
+const serviceEmail = new EmailService();
+const userRepository = new UsersRepository();
 
+const { v4 } = require('uuid');
 const reg = async (req, res, next) => {
   const { name, email, password, gender } = req.body;
 
@@ -17,7 +21,18 @@ const reg = async (req, res, next) => {
   }
 
   try {
-    const newUser = await serviceUser.create({ name, email, password, gender });
+    const newUser = await serviceUser.create({
+      name,
+      email,
+      password,
+      gender,
+      token: v4(),
+    });
+
+    const answerSendGrid = await serviceEmail.sendVerificationEmail(
+      email,
+      newUser.token,
+    );
 
     return res.status(HttpCode.CREATED).json({
       status: 'success',
@@ -27,6 +42,7 @@ const reg = async (req, res, next) => {
         email: newUser.email,
         gender: newUser.gender,
         name: newUser.name,
+        isVerified: newUser.isVerified,
       },
     });
   } catch (e) {
@@ -66,8 +82,41 @@ const logout = async (req, res, next) => {
     .json({ status: 'success', code: HttpCode.NO_CONTENT });
 };
 
+const verifiedTokenAfterRegister = async (req, res, next) => {
+  try {
+    const { token } = req.params;
+
+    const user = await userRepository.findByToken(token);
+    if (!user) {
+      return res.status(400).send({
+        success: false,
+        message: 'User doesnt exist',
+      });
+    }
+
+    if (user) {
+      if (!user.isVerified) {
+        user.isVerified = true;
+        await user.save();
+
+        return res.status(200).send({
+          success: true,
+          message: 'user verified successfully',
+        });
+      } else {
+        return res.send({
+          message: 'You have already verified this email',
+        });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   reg,
   login,
   logout,
+  verifiedTokenAfterRegister,
 };

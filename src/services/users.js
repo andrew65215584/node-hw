@@ -24,5 +24,7 @@ class UserService {
     
     return data;
   }
+
+  
 }
 module.exports = UserService;
